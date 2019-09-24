@@ -1,4 +1,4 @@
-# first-app
+# hypersite
 
 ## Project setup
 ```
