@@ -54,11 +54,18 @@ export default {
     logout () {
     },
     addElement () {
+      // ajouter un utilsateur
       this.todos.push({
         id: this.todos.length,
         name: this.name,
         description: this.description
       })
+      this.axios.post('http://localhost:4000/api/addElement', {
+        username: this.name,
+        password: this.description
+      })
+        .then(jsondata => console.log('response is:', jsondata))
+        .catch(console.log)
       console.log('ajouté !')
     },
     rmElement (index) {
