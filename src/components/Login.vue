@@ -5,11 +5,11 @@
         <v-container>
           <v-row>
             <v-col cols="12" md="4">
-              <v-text-field v-model="name" label="Name" required></v-text-field>
+              <v-text-field v-model="user" label="User" required></v-text-field>
             </v-col>
 
             <v-col cols="12" md="4">
-              <v-text-field v-model="description" label="Description" required></v-text-field>
+              <v-text-field v-model="password" label="Password" required></v-text-field>
             </v-col>
           </v-row>
           <v-btn @click="addElement">Ajouter</v-btn>
@@ -37,41 +37,73 @@
 export default {
   data: () => ({
     valid: false,
-    name: '',
-    description: '',
+    user: '',
+    password: '',
+    msgWarning: 'error',
+    msgStatus: '',
     todos: []
   }),
   methods: {
     login () {
-      // connecter l'utilisateur
-      this.axios.post('http://localhost:4000/api/login', {
-        username: this.name,
-        password: this.description
-      })
-        .then(jsondata => console.log('response is:', jsondata))
-        .catch(console.log)
+      if (this.password === '' || this.user === '') {
+        console.log('empty')
+        this.msgWarning = 'warning'
+        this.msgStatus = 'Username & Password are required !'
+        alert(this.msgStatus)
+      } else {
+        // connecter l'utilisateur
+        console.log('login request')
+        this.axios.post('http://localhost:4000/api/login', {
+          username: this.user,
+          password: this.password
+        })
+          .then(jsondata => console.log('response is:', jsondata), alert(this.jsondata))
+          .catch(console.log)
+      }
     },
     logout () {
     },
     addElement () {
-      // ajouter un utilsateur
-      this.todos.push({
-        id: this.todos.length,
-        name: this.name,
-        description: this.description
-      })
-      this.axios.post('http://localhost:4000/api/addElement', {
-        username: this.name,
-        password: this.description
-      })
-        .then(jsondata => console.log('response is:', jsondata))
-        .catch(console.log)
-      console.log('ajouté !')
-    },
-    rmElement (index) {
-      console.log('index', index)
-      this.todos.splice(index, 1)
+      if (this.password === '' || this.user === '') {
+        console.log('empty')
+        this.msgWarning = 'warning'
+        this.msgStatus = 'Username & Password are required !'
+        alert(this.msgStatus)
+      } /* else {
+        const jsondata = this.axios.post('http://localhost:4000/api/addElement', {
+          username: this.user
+        })
+          .then(jsondata => console.log('response is:', jsondata), alert(this.jsondata))
+          .catch(console.log)
+
+        if (!jsondata.data.status) {
+          console.log('user existant')
+          this.msgWarning = 'warning'
+          this.msgStatus = 'The User ' + this.user + ' already exist !'
+        } */ else {
+        // add new user
+        this.axios.post('http://localhost:4000/api/addElement', {
+          username: this.user,
+          password: this.password
+        })
+          .then(jsondata => console.log('response is:', jsondata), alert(this.jsondata))
+          .catch(console.log)
+        console.log('ajouté !')
+        this.msgStatus = 'The User ' + this.user + ' has been successfully created !'
+        console.log(this.msgStatus)
+        alert(this.msgStatus)
+      }
     }
   }
+  /* rmElement (index) {
+      console.log('index', index)
+      this.todos.splice(index, 1)
+    } */
+  // ajouter un utilsateur
+  /* this.todos.push({
+        id: this.todos.length,
+        user: this.user,
+        password: this.password
+      } */
 }
 </script>
