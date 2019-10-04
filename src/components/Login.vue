@@ -12,10 +12,10 @@
               <v-text-field v-model="password" label="Password" required></v-text-field>
             </v-col>
           </v-row>
-          <v-btn @click="addElement">Ajouter</v-btn>
           <v-btn @click="login">Connexion</v-btn>
         </v-container>
       </v-form>
+      <router-view></router-view>
       <v-card class="mx-auto" max-width="400" tile>
         <v-list-item v-for="(item, index) in todos" v-bind:key="item.id">
           <v-list-item-content>
@@ -39,15 +39,14 @@ export default {
     valid: false,
     user: '',
     password: '',
-    msgWarning: 'error',
     msgStatus: '',
     todos: []
   }),
+
   methods: {
     login () {
       if (this.password === '' || this.user === '') {
         console.log('empty')
-        this.msgWarning = 'warning'
         this.msgStatus = 'Username & Password are required !'
         alert(this.msgStatus)
       } else {
@@ -62,37 +61,6 @@ export default {
       }
     },
     logout () {
-    },
-    addElement () {
-      if (this.password === '' || this.user === '') {
-        console.log('empty')
-        this.msgWarning = 'warning'
-        this.msgStatus = 'Username & Password are required !'
-        alert(this.msgStatus)
-      } /* else {
-        const jsondata = this.axios.post('http://localhost:4000/api/addElement', {
-          username: this.user
-        })
-          .then(jsondata => console.log('response is:', jsondata), alert(this.jsondata))
-          .catch(console.log)
-
-        if (!jsondata.data.status) {
-          console.log('user existant')
-          this.msgWarning = 'warning'
-          this.msgStatus = 'The User ' + this.user + ' already exist !'
-        } */ else {
-        // add new user
-        this.axios.post('http://localhost:4000/api/addElement', {
-          username: this.user,
-          password: this.password
-        })
-          .then(jsondata => console.log('response is:', jsondata), alert(this.jsondata))
-          .catch(console.log)
-        console.log('ajouté !')
-        this.msgStatus = 'The User ' + this.user + ' has been successfully created !'
-        console.log(this.msgStatus)
-        alert(this.msgStatus)
-      }
     }
   }
   /* rmElement (index) {

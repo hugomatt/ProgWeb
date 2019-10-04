@@ -23,7 +23,8 @@ app.use(cors())
 
 const users = [{
   username: 'admin',
-  password: 'changethispassword'
+  password: 'changethispassword',
+  email: 'admin@test.com'
 }]
 
 app.get('/api/test', (req, res) => {
@@ -42,12 +43,17 @@ app.get('/api/test', (req, res) => {
 app.post('/api/addElement', (req, res) => {
   console.log('req.body', req.body)
   console.log('req.query', req.query)
-  const user = users.find(u => u.username === req.body.username || u.password === req.body.password)
+  const user = users.find(u => u.username === req.body.username || u.password === req.body.password || u.email === req.body.email)
   if (!user) {
     // gérez le cas il n'y a pas d'utilisateur correspondant et donc on ajoute un
     users.push({
       username: req.body.username,
-      password: req.body.password
+      password: req.body.password,
+      email: req.body.email
+    })
+    res.status(401)
+    res.json({
+      message: 'User add'
     })
   } else {
     // Erreur, utilisateur ou mot de passe deja pris
