@@ -44,23 +44,39 @@ export default {
   }),
 
   methods: {
-    login () {
+    async login () {
+      console.log(this.user)
+      console.log(this.password)
       if (this.password === '' || this.user === '') {
         console.log('empty')
         this.msgStatus = 'Username & Password are required !'
         alert(this.msgStatus)
       } else {
-        // connecter l'utilisateur
-        console.log('login request')
-        this.axios.post('http://localhost:4000/api/login', {
-          username: this.user,
-          password: this.password
-        })
-          .then(jsondata => console.log('response is:', jsondata), alert(this.jsondata))
-          .catch(console.log)
+        try {
+          const res = await this.axios.post('http://localhost:4000/api/login', {
+            username: this.user,
+            password: this.password
+          })
+          this.$session.start()
+
+          this.$session.set('username', res.data.username)
+          this.$session.set('email', res.data.email)
+
+          var msgStatus = this.$session.get('email')
+          var id = this.$session.id()
+
+          console.log(msgStatus)
+          console.log(id)
+          console.log('Logged !')
+          this.$router.push('Home')
+        } catch (error) {
+          this.error = error.response.data.message
+          console.log('response', JSON.stringify(error.response))
+        }
       }
     },
     logout () {
+      this.$session.destroy()
     }
   }
   /* rmElement (index) {

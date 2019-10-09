@@ -28,35 +28,24 @@ export default {
     todos: []
   }),
   methods: {
-    addElement () {
+    async addElement () {
       if (this.password === '' || this.email === '' || this.username === '') {
         console.log('empty')
         this.msgStatus = 'Username, Password & Email are required !'
         alert(this.msgStatus)
       } else {
-        const jsondata = this.axios.post('http://localhost:4000/api/addElement', {
-          username: this.user
+        // add new user
+        this.axios.post('http://localhost:4000/api/addElement', {
+          username: this.user,
+          password: this.password,
+          email: this.email
         })
           .then(jsondata => console.log('response is:', jsondata), alert(this.jsondata))
           .catch(console.log)
-
-        if (!jsondata.data.status) {
-          console.log('user existant')
-          this.msgStatus = 'The User ' + this.user + ' already exist !'
-        } else {
-        // add new user
-          this.axios.post('http://localhost:4000/api/addElement', {
-            username: this.user,
-            password: this.password,
-            email: this.email
-          })
-            .then(jsondata => console.log('response is:', jsondata), alert(this.jsondata))
-            .catch(console.log)
-          console.log('ajouté !')
-          this.msgStatus = 'The User ' + this.user + ' has been successfully created !'
-          console.log(this.msgStatus)
-          alert(this.msgStatus)
-        }
+        console.log('ajouté !')
+        this.msgStatus = 'The User ' + this.user + ' has been successfully created !'
+        console.log(this.msgStatus)
+        alert(this.msgStatus)
       }
     }
   }

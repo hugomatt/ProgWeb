@@ -27,23 +27,23 @@ const users = [{
   email: 'admin@test.com'
 }]
 
+var ids = 0
+
 app.get('/api/test', (req, res) => {
   console.log('ce console.log est appelé au bon moment')
-  res.json([
-    {
-      title: 'truc',
-      content: 'machin'
-    }, {
-      title: 'truc2',
-      content: 'machin2'
-    }
-  ])
+  var id = ids.find(u => u.id === req.body.id)
+  if (!id) {
+    ids = id
+  }
+  res.json({
+    id: req.body.id
+  })
 })
 
 app.post('/api/addElement', (req, res) => {
   console.log('req.body', req.body)
   console.log('req.query', req.query)
-  const user = users.find(u => u.username === req.body.username || u.password === req.body.password || u.email === req.body.email)
+  const user = users.find(u => u.username === req.body.username || u.email === req.body.email)
   if (!user) {
     // gérez le cas il n'y a pas d'utilisateur correspondant et donc on ajoute un
     users.push({
@@ -64,9 +64,10 @@ app.post('/api/addElement', (req, res) => {
   }
 })
 
-app.post('/api/login', (req, res) => {
+app.post('/api/login', (req, res, next) => {
   console.log('req.body', req.body)
   console.log('req.query', req.query)
+
   if (!req.session.userId) {
     const user = users.find(u => u.username === req.body.username && u.password === req.body.password)
     if (!user) {
@@ -80,7 +81,8 @@ app.post('/api/login', (req, res) => {
         // connect the user
         req.session.userId = 1000 // connect the user, and change the id
         res.json({
-          message: 'connected'
+          username: req.body.username,
+          email: user.email
         })
       } else {
         res.status(401)
@@ -89,6 +91,10 @@ app.post('/api/login', (req, res) => {
         })
       }
     }
+  } else {
+    res.json({
+      message: 'you are already connected'
+    })
   }
 })
 
