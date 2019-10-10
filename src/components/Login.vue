@@ -13,6 +13,7 @@
             </v-col>
           </v-row>
           <v-btn @click="login">Connexion</v-btn>
+          <v-btn @click="logout">Logout</v-btn>
         </v-container>
       </v-form>
       <router-view></router-view>
@@ -40,6 +41,7 @@ export default {
     user: '',
     password: '',
     msgStatus: '',
+    sessId: '',
     todos: []
   }),
 
@@ -55,18 +57,19 @@ export default {
         try {
           const res = await this.axios.post('http://localhost:4000/api/login', {
             username: this.user,
-            password: this.password
+            password: this.password,
+            userId: this.$session.id()
           })
           this.$session.start()
 
           this.$session.set('username', res.data.username)
           this.$session.set('email', res.data.email)
+          this.$session.set('ID', res.data.ID)
 
           var msgStatus = this.$session.get('email')
           var id = this.$session.id()
-
-          console.log(msgStatus)
           console.log(id)
+          console.log(msgStatus)
           console.log('Logged !')
           this.$router.push('Home')
         } catch (error) {
@@ -75,8 +78,10 @@ export default {
         }
       }
     },
-    logout () {
+    async logout () {
       this.$session.destroy()
+      var msgStatus = this.$session.get('ID')
+      console.log(msgStatus)
     }
   }
   /* rmElement (index) {

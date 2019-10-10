@@ -27,19 +27,6 @@ const users = [{
   email: 'admin@test.com'
 }]
 
-var ids = 0
-
-app.get('/api/test', (req, res) => {
-  console.log('ce console.log est appelé au bon moment')
-  var id = ids.find(u => u.id === req.body.id)
-  if (!id) {
-    ids = id
-  }
-  res.json({
-    id: req.body.id
-  })
-})
-
 app.post('/api/addElement', (req, res) => {
   console.log('req.body', req.body)
   console.log('req.query', req.query)
@@ -51,7 +38,7 @@ app.post('/api/addElement', (req, res) => {
       password: req.body.password,
       email: req.body.email
     })
-    res.status(401)
+    // res.status(401)
     res.json({
       message: 'User add'
     })
@@ -77,7 +64,7 @@ app.post('/api/login', (req, res, next) => {
         message: 'error'
       })
     } else {
-      if (req.session.userId !== 1000) {
+      if (req.session.userId !== 1000 && req.body.userID !== 1000) {
         // connect the user
         req.session.userId = 1000 // connect the user, and change the id
         res.json({

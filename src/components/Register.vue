@@ -25,27 +25,38 @@ export default {
     password: '',
     email: '',
     msgStatus: '',
+    info: '',
     todos: []
   }),
   methods: {
     async addElement () {
-      if (this.password === '' || this.email === '' || this.username === '') {
+      console.log(this.username)
+      console.log(this.password)
+      console.log(this.email)
+      if (this.password === '' || this.username === '') {
         console.log('empty')
         this.msgStatus = 'Username, Password & Email are required !'
         alert(this.msgStatus)
       } else {
+        try {
         // add new user
-        this.axios.post('http://localhost:4000/api/addElement', {
-          username: this.user,
-          password: this.password,
-          email: this.email
-        })
-          .then(jsondata => console.log('response is:', jsondata), alert(this.jsondata))
-          .catch(console.log)
-        console.log('ajouté !')
-        this.msgStatus = 'The User ' + this.user + ' has been successfully created !'
-        console.log(this.msgStatus)
-        alert(this.msgStatus)
+          const res = await this.axios.post('http://localhost:4000/api/addElement', {
+            username: this.username,
+            password: this.password,
+            email: this.email
+          })
+          this.info = res.data.username
+          // .then(jsondata => console.log('response is:', jsondata), alert(this.jsondata))
+          // .catch(console.log)
+          console.log('ajouté !')
+          this.msgStatus = 'The User ' + this.user + ' has been successfully created !'
+          console.log(this.msgStatus)
+          console.log(this.info)
+          alert(this.msgStatus)
+        } catch (error) {
+          this.error = error.response.data.message
+          console.log('response', JSON.stringify(error.response))
+        }
       }
     }
   }
