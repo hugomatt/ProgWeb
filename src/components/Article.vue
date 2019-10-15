@@ -23,7 +23,7 @@ export default {
   data () {
     return {
       projects: [
-        { title: 'Sida', person: 'Thomas', date: '10/08/2019', status: 'complete', content: 'Neret est gay' },
+        { title: 'Maladie', person: 'Thomas', date: '10/08/2019', status: 'complete', content: 'les ravages de la peste noir' },
         { title: 'Moto', person: 'Cédric', date: '09/09/2019', status: 'ongoing', content: 'Mon futur achat' },
         { title: 'Argent', person: 'Hugo', date: '01/10/2019', status: 'ongoing', content: 'Comment gagner du fric en masse' },
         { title: 'Casque', person: 'Stéphane', date: '09/10/2019', status: 'overdue', content: 'Casque spéciale banane' }
