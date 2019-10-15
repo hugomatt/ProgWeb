@@ -1,0 +1,112 @@
+<template>
+  <div class="Home">
+    <h1>Home</h1>
+    <v-container class="my-5">
+
+<v-layout row class="mb-3">
+  <v-tooltip top>
+    <template v-slot:activator="{ on }">
+  <v-btn small flat color="grey" @click="sortBy('title')" v-on="on">
+    <v-icon left small>mdi-folder</v-icon>
+    <span class="caption text-lowercase">By article name</span>
+  </v-btn>
+    </template>
+  <span>Sort article by article name</span>
+  </v-tooltip>
+
+  <v-tooltip top>
+    <template v-slot:activator="{ on }">
+<v-btn small flat color="grey" @click="sortBy('person')" v-on="on">
+    <v-icon left small>mdi-person</v-icon>
+    <span class="caption text-lowercase">By person</span>
+  </v-btn>
+    </template>
+  <span>Sort article by name</span>
+  </v-tooltip>
+</v-layout>
+
+<br>
+
+      <v-card  flat v-for="article in articles" :key="article.title">
+        <v-layout row wrap :class="`pa-3 article ${article.status}`">
+          <v-flex xs12 md6>
+          <div class="caption grey--text">Article title</div>
+          <div>{{ article.title }}</div>
+          </v-flex>
+          <v-flex xs6 md2>
+          <div class="caption grey--text">edited by</div>
+          <div>{{ article.person }}</div>
+          </v-flex>
+          <v-flex xs6 sm4 md2>
+          <div class="caption grey--text">Due by</div>
+          <div>{{ article.date }}</div>
+          </v-flex>
+          <v-flex xs2 sm4 md2>
+            <br>
+          <div class="right">
+            <v-chip small :color="`${article.status}`" :class="`v-chip--active white--text caption my-2`">{{ article.status }}</v-chip>
+          </div>
+          </v-flex>
+        </v-layout>
+        <br>
+        <v-divider></v-divider>
+      </v-card>
+    </v-container>
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      articles: [
+        { title: 'Maladie', person: 'Thomas', date: '10/08/2019', status: 'complete' },
+        { title: 'Moto', person: 'Cédric', date: '09/09/2019', status: 'ongoing' },
+        { title: 'Argent', person: 'Hugo', date: '01/10/2019', status: 'ongoing' },
+        { title: 'Casque', person: 'Stéphane', date: '09/10/2019', status: 'overdue' }
+      ]
+    }
+  },
+  methods: {
+    sortBy (prop) {
+      this.articles.sort((a, b) => a[prop] < b[prop] ? -1 : 1)
+    }
+  },
+
+  async created () {
+    const res = await this.axios.post('http://localhost:4000/api/article', {
+      title: this.title
+    })
+    this.info = res.data.title
+    console.log(this.info)
+  }
+}
+</script>
+
+<style>
+
+.article.complete {
+  border-left: 4px solid #3cd1c2;
+}
+
+.article.ongoing {
+  border-left: 4px solid orange;
+}
+
+.article.overdue {
+  border-left: 4px solid red;
+}
+
+.v-chip.complete {
+  background: #3cd1c2;
+}
+
+.v-chip.ongoing {
+  background: #ffaa2c;
+}
+
+.v-chip.overdue {
+  background: #f83e70;
+}
+
+</style>
