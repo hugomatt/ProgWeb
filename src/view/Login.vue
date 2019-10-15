@@ -13,7 +13,6 @@
             </v-col>
           </v-row>
           <v-btn @click="login">Connexion</v-btn>
-          <v-btn @click="logout">Logout</v-btn>
         </v-container>
       </v-form>
       <router-view></router-view>
@@ -77,11 +76,6 @@ export default {
           console.log('response', JSON.stringify(error.response))
         }
       }
-    },
-    async logout () {
-      this.$session.destroy()
-      var msgStatus = this.$session.get('ID')
-      console.log(msgStatus)
     }
   }
   /* rmElement (index) {

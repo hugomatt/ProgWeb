@@ -27,6 +27,32 @@ const users = [{
   email: 'admin@test.com'
 }]
 
+const articles = [{
+  title: '',
+  person: '',
+  date: '',
+  status: '',
+  content: ''
+
+}]
+
+app.post('/api/article', (req, res) => {
+  articles.push({
+    title: req.body.title,
+    person: req.body.person,
+    date: req.body.date,
+    status: req.body.status,
+    content: req.body.content
+  })
+  res.json({
+    title: req.body.title,
+    person: req.body.person,
+    date: req.body.date,
+    status: req.body.status,
+    content: req.body.content
+  })
+})
+
 app.post('/api/addElement', (req, res) => {
   console.log('req.body', req.body)
   console.log('req.query', req.query)
