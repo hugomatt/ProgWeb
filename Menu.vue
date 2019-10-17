@@ -49,13 +49,30 @@
       <v-toolbar-title>HyperSiteConsulting</v-toolbar-title>
       <div class="flex-grow-1"></div>
       <v-spacer></v-spacer>
-      <v-btn color="#40A461" @click="logout" >
+      <router-link to="/login" @ckick="affichage" v-show="visi">
+      <v-btn color="#FF0000">
+        <span>Sign in</span>
+        <v-icon right color="#00000">mdi-account</v-icon>
+        </v-btn>
+      </router-link>
+      <router-link to="/register">
+        <v-btn color="#FF0000" @click="visible" v-show="visi">
+        <span>Register</span>
+        <v-icon right color="#00000">mdi-account</v-icon>
+        </v-btn>
+      </router-link>
+      <router-link to="/home">
+      <v-btn color="#FF0000" @click="logout" v-show="out">
         <span>Sign out</span>
         <v-icon right color="#00000">mdi-logout</v-icon>
         </v-btn>
+      </router-link>
     </v-app-bar>
        <v-flex>
         <Popup @articleAdded="snackbar = true" />
+        </v-flex>
+        <v-flex>
+        <Login @visu="visi = false" />
         </v-flex>
     <div class="text-center">
       <back-to-top text="Back to top"></back-to-top>
@@ -72,22 +89,44 @@ export default {
     return {
       activeBtn: 1,
       offsetTop: 0,
+      out: true,
+      visi: true,
       showNav: true,
       drawer: false,
       items: [
         { title: 'Home', icon: 'mdi-home', route: '/home' },
         { title: 'About', icon: 'mdi-help-box', route: '/about' },
-        { title: 'Login', icon: 'mdi-account', route: '/login' },
         { title: 'Article', icon: 'mdi-book', route: '/article' }
       ],
-      snackbar: false
+      snackbar: false,
+      id: 0
     }
   },
   methods: {
     async logout () {
-      this.$session.destroy()
       var msgStatus = this.$session.get('ID')
       console.log(msgStatus)
+      this.$session.destroy()
+      var msgStatus2 = this.$session.get('ID')
+      console.log(msgStatus2)
+      this.visi = false
+      var id = msgStatus2
+      if (!id) {
+        this.visi = false
+      } else {
+        this.visi = true
+      }
+    },
+    async affichage () {
+      var msgStatus = this.$session.get('ID')
+      console.log(msgStatus)
+      this.out = true
+      var id = msgStatus
+      if (!id) {
+        this.out = false
+      } else {
+        this.out = true
+      }
     }
   }
 }

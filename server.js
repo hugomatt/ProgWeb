@@ -36,6 +36,10 @@ const articles = [{
 
 }]
 
+app.get('/api/article', (req, res) => {
+  res.json(articles)
+})
+
 app.post('/api/article', (req, res) => {
   articles.push({
     title: req.body.title,

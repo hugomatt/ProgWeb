@@ -64,7 +64,7 @@ export default {
           this.$session.set('username', res.data.username)
           this.$session.set('email', res.data.email)
           this.$session.set('ID', res.data.ID)
-
+          this.$emit('visu')
           var msgStatus = this.$session.get('email')
           var id = this.$session.id()
           console.log(id)

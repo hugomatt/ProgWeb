@@ -2,7 +2,7 @@
   <div class="Home">
     <h1>Home</h1>
     <v-container class="my-5">
-
+      <v-btn class="mb-3" success @click='test'>Test</v-btn>
 <v-layout row class="mb-3">
   <v-tooltip top>
     <template v-slot:activator="{ on }">
@@ -13,7 +13,6 @@
     </template>
   <span>Sort article by article name</span>
   </v-tooltip>
-
   <v-tooltip top>
     <template v-slot:activator="{ on }">
 <v-btn small flat color="grey" @click="sortBy('person')" v-on="on">
@@ -68,17 +67,25 @@ export default {
     }
   },
   methods: {
-    sortBy (prop) {
+    async sortBy (prop) {
       this.articles.sort((a, b) => a[prop] < b[prop] ? -1 : 1)
+    },
+    async test () {
+      console.log('Test')
+      const res = await this.axios.get('http://localhost:4000/api/article', {
+      })
+      this.articles.push({
+        title: res.data.title,
+        person: res.body.person,
+        date: res.body.date,
+        status: res.body.status,
+        content: res.body.content })
+      // .then(jsondata => console.log('response is:', jsondata))
+      //  .catch(console.log)
+      // test :
+      this.info = res.data.title
+      console.log(this.info)
     }
-  },
-
-  async created () {
-    const res = await this.axios.post('http://localhost:4000/api/article', {
-      title: this.title
-    })
-    this.info = res.data.title
-    console.log(this.info)
   }
 }
 </script>
