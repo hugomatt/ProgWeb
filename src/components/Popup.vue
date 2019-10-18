@@ -35,33 +35,38 @@ export default {
   },
   methods: {
     async submit () {
-      if (this.$refs.form.validate()) {
-        this.loading = true
-        try {
-          var user = this.$session.get('username')
-          const res = await this.axios.post('http://localhost:4000/api/article', {
-            title: this.title,
-            person: user,
-            date: this.due,
-            status: 'ongoing',
-            content: this.content
-          })
-          this.loading = false
-          this.dialog = false
-          this.$emit('articleAdded')
-          this.titre = res.data.title
-          console.log(this.titre)
-          this.character = res.data.person
-          console.log(this.character)
-          var time = res.data.date
-          console.log(time)
-          var stat = res.data.status
-          console.log(stat)
-          var contenu = res.data.content
-          console.log(contenu)
-        } catch (error) {
-          this.error = error.response.data.message
-          console.log('response', JSON.stringify(error.response))
+      if (!this.$session.id()) {
+        this.msgStatus = 'You are not connected'
+        alert(this.msgStatus)
+      } else {
+        if (this.$refs.form.validate()) {
+          this.loading = true
+          try {
+            var user = this.$session.get('username')
+            const res = await this.axios.post('http://localhost:4000/api/article', {
+              title: this.title,
+              person: user,
+              date: this.due,
+              status: 'ongoing',
+              content: this.content
+            })
+            this.loading = false
+            this.dialog = false
+            this.$emit('articleAdded')
+            this.titre = res.data.title
+            console.log(this.titre)
+            this.character = res.data.person
+            console.log(this.character)
+            var time = res.data.date
+            console.log(time)
+            var stat = res.data.status
+            console.log(stat)
+            var contenu = res.data.content
+            console.log(contenu)
+          } catch (error) {
+            this.error = error.response.data.message
+            console.log('response', JSON.stringify(error.response))
+          }
         }
       }
     }

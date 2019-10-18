@@ -22,7 +22,7 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>Nom de d'utilisateur</v-list-item-title>
+            <v-list-item-title>{{username}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
@@ -89,6 +89,7 @@ export default {
     return {
       activeBtn: 1,
       offsetTop: 0,
+      username: this.$session.get('username'),
       out: true,
       visi: true,
       showNav: true,
@@ -102,31 +103,19 @@ export default {
       id: 0
     }
   },
+  created () {
+    this.fetchEventsList()
+    this.timer = setInterval(this.fetchEventsList, 10)
+  },
   methods: {
     async logout () {
       var msgStatus = this.$session.get('ID')
       console.log(msgStatus)
       this.$session.destroy()
-      var msgStatus2 = this.$session.get('ID')
-      console.log(msgStatus2)
-      this.visi = false
-      var id = msgStatus2
-      if (!id) {
-        this.visi = false
-      } else {
-        this.visi = true
-      }
+      this.username = ''
     },
-    async affichage () {
-      var msgStatus = this.$session.get('ID')
-      console.log(msgStatus)
-      this.out = true
-      var id = msgStatus
-      if (!id) {
-        this.out = false
-      } else {
-        this.out = true
-      }
+    async fetchEventsList () {
+      this.username = this.$session.get('username')
     }
   }
 }

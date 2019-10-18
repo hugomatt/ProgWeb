@@ -40,53 +40,42 @@ export default {
     user: '',
     password: '',
     msgStatus: '',
-    sessId: '',
     todos: []
   }),
 
   methods: {
     async login () {
-      console.log(this.user)
-      console.log(this.password)
       if (this.password === '' || this.user === '') {
         console.log('empty')
         this.msgStatus = 'Username & Password are required !'
         alert(this.msgStatus)
       } else {
-        try {
-          const res = await this.axios.post('http://localhost:4000/api/login', {
-            username: this.user,
-            password: this.password,
-            userId: this.$session.id()
-          })
-          this.$session.start()
+        if (this.$session.id()) {
+          this.msgStatus = 'A user is already connected'
+          alert(this.msgStatus)
+        } else {
+          try {
+            const res = await this.axios.post('http://localhost:4000/api/login', {
+              username: this.user,
+              password: this.password,
+              userId: this.$session.id()
+            })
+            this.$session.start()
 
-          this.$session.set('username', res.data.username)
-          this.$session.set('email', res.data.email)
-          this.$session.set('ID', res.data.ID)
-          this.$emit('visu')
-          var msgStatus = this.$session.get('email')
-          var id = this.$session.id()
-          console.log(id)
-          console.log(msgStatus)
-          console.log('Logged !')
-          this.$router.push('Home')
-        } catch (error) {
-          this.error = error.response.data.message
-          console.log('response', JSON.stringify(error.response))
+            this.$session.set('username', res.data.username)
+            this.$session.set('email', res.data.email)
+            this.$session.set('ID', res.data.ID)
+            var id = this.$session.id()
+            console.log(id)
+            console.log('Logged !')
+            this.$router.push('Home')
+          } catch (error) {
+            this.error = error.response.data.message
+            console.log('response', JSON.stringify(error.response))
+          }
         }
       }
     }
   }
-  /* rmElement (index) {
-      console.log('index', index)
-      this.todos.splice(index, 1)
-    } */
-  // ajouter un utilsateur
-  /* this.todos.push({
-        id: this.todos.length,
-        user: this.user,
-        password: this.password
-      } */
 }
 </script>

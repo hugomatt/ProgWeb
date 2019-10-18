@@ -75,11 +75,11 @@ export default {
       const res = await this.axios.get('http://localhost:4000/api/article', {
       })
       this.articles.push({
-        title: res.data.title,
-        person: res.body.person,
-        date: res.body.date,
-        status: res.body.status,
-        content: res.body.content })
+        title: 'res.data.title',
+        person: 'res.body.person',
+        date: 'res.body.date',
+        status: 'res.body.status',
+        content: 'res.body.content' })
       // .then(jsondata => console.log('response is:', jsondata))
       //  .catch(console.log)
       // test :
