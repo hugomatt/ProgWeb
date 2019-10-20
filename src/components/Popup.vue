@@ -11,6 +11,25 @@
         <v-text-field label="Title" v-model="title" prepend-icon="mdi-folder" :rules="inputRules"></v-text-field>
         <v-textarea label="Description" v-model="content" prepend-icon="mdi-pen" :rules="inputRules"></v-textarea>
         <v-spacer></v-spacer>
+        <v-menu
+        v-model="menu1"
+        :close-on-content-click="false"
+        :nudge-right="40"
+        transition="scale-transition"
+        offset-y
+        min-width="290px"
+      >
+        <template v-slot:activator="{ on }">
+          <v-text-field
+            v-model="due"
+            label="Date of creation"
+            prepend-icon= mdi-calendar
+            readonly
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker v-model="due" color="#203DD1" @input="menu1 = false"></v-date-picker>
+      </v-menu>
         <v-btn flat class="success mx-0 mt-3" color="#59D120" @click="submit" :loading="loading">Add article</v-btn>
       </v-form>
     </v-card>
@@ -23,9 +42,10 @@
 export default {
   data () {
     return {
+      due: new Date().toISOString().substr(0, 10),
+      menu1: false,
       title: '',
       content: '',
-      due: null,
       inputRules: [
         v => v.length >= 3 || 'Minimum length is a 3'
       ],

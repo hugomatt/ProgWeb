@@ -49,20 +49,20 @@
       <v-toolbar-title>HyperSiteConsulting</v-toolbar-title>
       <div class="flex-grow-1"></div>
       <v-spacer></v-spacer>
-      <router-link to="/login" @ckick="affichage" v-show="visi">
+      <router-link to="/login">
       <v-btn color="#FF0000">
         <span>Sign in</span>
         <v-icon right color="#00000">mdi-account</v-icon>
         </v-btn>
       </router-link>
       <router-link to="/register">
-        <v-btn color="#FF0000" @click="visible" v-show="visi">
+        <v-btn color="#FF0000">
         <span>Register</span>
         <v-icon right color="#00000">mdi-account</v-icon>
         </v-btn>
       </router-link>
       <router-link to="/home">
-      <v-btn color="#FF0000" @click="logout" v-show="out">
+      <v-btn color="#FF0000" @click="logout">
         <span>Sign out</span>
         <v-icon right color="#00000">mdi-logout</v-icon>
         </v-btn>
