@@ -59,10 +59,6 @@ export default {
   data () {
     return {
       articles: [
-        { title: 'Maladie', person: 'Thomas', date: '10/08/2019', status: 'complete' },
-        { title: 'Moto', person: 'Cédric', date: '09/09/2019', status: 'ongoing' },
-        { title: 'Argent', person: 'Hugo', date: '01/10/2019', status: 'ongoing' },
-        { title: 'Casque', person: 'Stéphane', date: '09/10/2019', status: 'overdue' }
       ]
     }
   },
@@ -72,19 +68,9 @@ export default {
     },
     async test () {
       console.log('Test')
-      const res = await this.axios.get('http://localhost:4000/api/article', {
-      })
-      this.articles.push({
-        title: 'res.data.title',
-        person: 'res.body.person',
-        date: 'res.body.date',
-        status: 'res.body.status',
-        content: 'res.body.content' })
-      // .then(jsondata => console.log('response is:', jsondata))
-      //  .catch(console.log)
-      // test :
-      this.info = res.data.title
-      console.log(this.info)
+      const art = await this.axios.get('http://localhost:4000/api/article')
+      this.$session.set('article', art.data)
+      this.articles = this.$session.get('article')
     }
   }
 }

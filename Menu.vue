@@ -1,10 +1,6 @@
 <template>
 <nav>
       <v-toolbar></v-toolbar>
-    <v-snackbar v-model="snackbar" :timeout="4000" top color="#000000">
-      <span>Ajout réussi</span>
-      <v-btn flat color="#FF0000" @click="snackbar = false">Close</v-btn>
-    </v-snackbar>
       <router-view></router-view>
       <v-container class="fill-height">
         <v-row align="center" justify="center"></v-row>
@@ -68,12 +64,6 @@
         </v-btn>
       </router-link>
     </v-app-bar>
-       <v-flex>
-        <Popup @articleAdded="snackbar = true" />
-        </v-flex>
-        <v-flex>
-        <Login @visu="visi = false" />
-        </v-flex>
     <div class="text-center">
       <back-to-top text="Back to top"></back-to-top>
     </div>
@@ -81,9 +71,7 @@
 </template>
 
 <script>
-import Popup from '@/components/Popup.vue'
 export default {
-  components: { Popup },
   name: 'app',
   data () {
     return {
@@ -99,8 +87,7 @@ export default {
         { title: 'About', icon: 'mdi-help-box', route: '/about' },
         { title: 'Article', icon: 'mdi-book', route: '/article' }
       ],
-      snackbar: false,
-      id: 0
+      snackbar: false
     }
   },
   created () {

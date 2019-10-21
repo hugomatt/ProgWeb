@@ -48,6 +48,8 @@ export default {
               userId: this.$session.id()
             })
             this.$session.start()
+            const art = await this.axios.get('http://localhost:4000/api/article')
+            this.$session.set('article', art.data)
 
             this.$session.set('username', res.data.username)
             this.$session.set('email', res.data.email)

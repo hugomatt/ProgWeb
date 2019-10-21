@@ -28,12 +28,11 @@ const users = [{
 }]
 
 const articles = [{
-  title: '',
-  person: '',
-  date: '',
-  status: '',
-  content: ''
-
+  title: 'Maladie',
+  person: 'Thomas',
+  date: '2019/10/22',
+  status: 'overdue',
+  content: 'Les ravages de la peste'
 }]
 
 app.get('/api/article', (req, res) => {
@@ -101,6 +100,7 @@ app.post('/api/login', (req, res, next) => {
           username: req.body.username,
           email: user.email
         })
+        console.log(this.articles)
       } else {
         res.status(401)
         res.json({
