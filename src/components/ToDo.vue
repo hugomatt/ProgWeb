@@ -1,42 +1,42 @@
 <template>
-<div id="todo">
-  <br>
-  <br>
-  <br>
+  <div id="todo">
+    <br />
+    <br />
+    <br />
     <v-container>
-    <v-layout text-center wrap>
-      <v-form v-model="valid">
-        <v-container>
-          <v-row>
-            <v-col cols="12" md="4">
-              <v-text-field
-                v-model="title"
-                label="Title"
-                required
-              ></v-text-field>
-            </v-col>
+      <v-layout text-center wrap>
+        <v-form v-model="valid">
+          <v-container>
+            <v-row>
+              <v-col cols="12" md="4">
+                <v-text-field v-model="title" label="Title" required></v-text-field>
+              </v-col>
 
-            <v-col cols="12" md="4">
-              <v-text-field
-                v-model="content"
-                label="Content"
-                required
-              ></v-text-field>
-            </v-col>
-            <v-col>
-              <v-btn v-on:click="addTodo">Ajouter</v-btn>
-              <br>
-              <br>
-              <li v-for= "todo in todoList" :key="todo.id">
-               <p align="left"> Title : {{todo.title}} <br> content :{{todo.content}} </p><br><br>
-                <v-btn v-on:click="delTodo">Supprimer</v-btn><br><br>
+              <v-col cols="12" md="4">
+                <v-text-field v-model="content" label="Content" required></v-text-field>
+              </v-col>
+              <v-col>
+                <v-btn v-on:click="addTodo">Ajouter</v-btn>
+                <br />
+                <br />
+                <li v-for="todo in todoList" :key="todo.id">
+                  <p align="left">
+                    Title : {{todo.title}}
+                    <br />
+                    content :{{todo.content}}
+                  </p>
+                  <br />
+                  <br />
+                  <v-btn v-on:click="delTodo">Supprimer</v-btn>
+                  <br />
+                  <br />
                 </li>
               </v-col>
-          </v-row>
-        </v-container>
-      </v-form>
-    </v-layout>
-  </v-container>
+            </v-row>
+          </v-container>
+        </v-form>
+      </v-layout>
+    </v-container>
   </div>
 </template>
 

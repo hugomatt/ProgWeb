@@ -16,19 +16,6 @@
         </v-container>
       </v-form>
       <router-view></router-view>
-      <v-card class="mx-auto" max-width="400" tile>
-        <v-list-item v-for="(item, index) in todos" v-bind:key="item.id">
-          <v-list-item-content>
-            <v-list-item-title>
-              {{ item.name }}
-            </v-list-item-title>
-            <v-list-item-subtitle>
-              {{ item.description }}
-              <v-btn @click="rmElement(index)">Remove</v-btn>
-            </v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </v-card>
     </v-layout>
   </v-container>
 </template>
@@ -40,53 +27,51 @@ export default {
     user: '',
     password: '',
     msgStatus: '',
-    sessId: '',
     todos: []
   }),
 
   methods: {
     async login () {
-      console.log(this.user)
-      console.log(this.password)
       if (this.password === '' || this.user === '') {
         console.log('empty')
         this.msgStatus = 'Username & Password are required !'
         alert(this.msgStatus)
       } else {
-        try {
-          const res = await this.axios.post('http://localhost:4000/api/login', {
-            username: this.user,
-            password: this.password,
-            userId: this.$session.id()
-          })
-          this.$session.start()
+        if (this.$session.id()) {
+          this.msgStatus = 'A user is already connected'
+          alert(this.msgStatus)
+        } else {
+          try {
+            const res = await this.axios.post(
+              'http://localhost:4000/api/login',
+              {
+                username: this.user,
+                password: this.password,
+                userId: this.$session.id()
+              }
+            )
+            this.$session.start()
+            const art = await this.axios.get(
+              'http://localhost:4000/api/article'
+            )
+            this.$session.set('article', art.data)
 
-          this.$session.set('username', res.data.username)
-          this.$session.set('email', res.data.email)
-          this.$session.set('ID', res.data.ID)
-
-          var msgStatus = this.$session.get('email')
-          var id = this.$session.id()
-          console.log(id)
-          console.log(msgStatus)
-          console.log('Logged !')
-          this.$router.push('Home')
-        } catch (error) {
-          this.error = error.response.data.message
-          console.log('response', JSON.stringify(error.response))
+            this.$session.set('username', res.data.username)
+            this.$session.set('email', res.data.email)
+            this.$session.set('ID', res.data.ID)
+            var id = this.$session.id()
+            console.log(id)
+            console.log('Logged !')
+            this.$router.push('Home')
+          } catch (error) {
+            this.error = error.response.data.message
+            console.log('response', JSON.stringify(error.response))
+            this.msgStatus = 'Username or Password is wrong !'
+            alert(this.msgStatus)
+          }
         }
       }
     }
   }
-  /* rmElement (index) {
-      console.log('index', index)
-      this.todos.splice(index, 1)
-    } */
-  // ajouter un utilsateur
-  /* this.todos.push({
-        id: this.todos.length,
-        user: this.user,
-        password: this.password
-      } */
 }
 </script>
