@@ -2,7 +2,6 @@
   <div class="Home">
     <h1>Home</h1>
     <v-container class="my-5">
-      <v-btn class="mb-3" success @click='test'>Test</v-btn>
 <v-layout row class="mb-3">
   <v-tooltip top>
     <template v-slot:activator="{ on }">
@@ -62,15 +61,21 @@ export default {
       ]
     }
   },
+  created () {
+    this.fetchEventsList()
+    this.timer = setInterval(this.fetchEventsList, 1000000000)
+  },
   methods: {
     async sortBy (prop) {
       this.articles.sort((a, b) => a[prop] < b[prop] ? -1 : 1)
     },
-    async test () {
-      console.log('Test')
-      const art = await this.axios.get('http://localhost:4000/api/article')
-      this.$session.set('article', art.data)
-      this.articles = this.$session.get('article')
+    async fetchEventsList () {
+      if (!this.$session.id()) {
+      } else {
+        const art = await this.axios.get('http://localhost:4000/api/article')
+        this.$session.set('article', art.data)
+        this.articles = this.$session.get('article')
+      }
     }
   }
 }

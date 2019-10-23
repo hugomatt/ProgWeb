@@ -50,6 +50,19 @@
         </template>
         <v-date-picker v-model="due" color="#203DD1" @input="menu1 = false"></v-date-picker>
       </v-menu>
+      <v-col class="d-flex" cols="12" sm="6">
+        <v-select
+          v-model="status"
+          value=""
+          label="status"
+          dense
+        >
+        <option disabled value="">choix</option>
+        <option>ongoing</option>
+        <option>overdue</option>
+        <option>complete</option>
+        </v-select>
+      </v-col>
         <v-btn flat class="success mx-0 mt-3" color="#59D120" @click="submit" :loading="loading">Add article</v-btn>
       </v-form>
     </v-card>
@@ -62,6 +75,7 @@ export default {
   data () {
     return {
       projects: [],
+      status: '',
       due: new Date().toISOString().substr(0, 10),
       menu1: false,
       title: '',
@@ -74,44 +88,61 @@ export default {
       snackbar: false
     }
   },
+  created () {
+    this.fetchEventsList()
+    this.timer = setInterval(this.fetchEventsList, 1000000000)
+  },
   methods: {
     async submit () {
       if (!this.$session.id()) {
         this.msgStatus = 'You are not connected'
         alert(this.msgStatus)
       } else {
-        if (this.$refs.form.validate()) {
-          this.loading = true
-          try {
-            var user = this.$session.get('username')
-            const res = await this.axios.post('http://localhost:4000/api/article', {
-              title: this.title,
-              person: user,
-              date: this.due,
-              status: 'ongoing',
-              content: this.content
-            })
-            this.snackbar = true
-            this.loading = false
-            this.dialog = false
-            this.titre = res.data.title
-            console.log(this.titre)
-            this.character = res.data.person
-            console.log(this.character)
-            var time = res.data.date
-            console.log(time)
-            var stat = res.data.status
-            console.log(stat)
-            var contenu = res.data.content
-            console.log(contenu)
-            const art = await this.axios.get('http://localhost:4000/api/article')
-            this.$session.set('article', art.data)
-            this.projects = this.$session.get('article')
-          } catch (error) {
-            this.error = error.response.data.message
-            console.log('response', JSON.stringify(error.response))
+        if (this.$session.get('username') !== 'admin') {
+          this.msgStatus = 'You are not alowed to add an articles, you need to be administrator'
+          alert(this.msgStatus)
+        } else {
+          if (this.$refs.form.validate()) {
+            this.loading = true
+            try {
+              var user = this.$session.get('username')
+              const res = await this.axios.post('http://localhost:4000/api/article', {
+                title: this.title,
+                person: user,
+                date: this.due,
+                status: this.stats,
+                content: this.content
+              })
+              this.snackbar = true
+              this.loading = false
+              this.dialog = false
+              this.titre = res.data.title
+              console.log(this.titre)
+              this.character = res.data.person
+              console.log(this.character)
+              var time = res.data.date
+              console.log(time)
+              var stat = res.data.status
+              console.log(stat)
+              var contenu = res.data.content
+              console.log(contenu)
+              const art = await this.axios.get('http://localhost:4000/api/article')
+              this.$session.set('article', art.data)
+              this.projects = this.$session.get('article')
+            } catch (error) {
+              this.error = error.response.data.message
+              console.log('response', JSON.stringify(error.response))
+            }
           }
         }
+      }
+    },
+    async fetchEventsList () {
+      if (!this.$session.id()) {
+      } else {
+        const art = await this.axios.get('http://localhost:4000/api/article')
+        this.$session.set('article', art.data)
+        this.projects = this.$session.get('article')
       }
     }
   },
