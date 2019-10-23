@@ -47,7 +47,7 @@
           <v-icon right color="#00000">mdi-account</v-icon>
         </v-btn>
       </router-link>
-      <router-link to="/home">
+      <router-link to="/about">
         <v-btn color="#FF0000" @click="logout">
           <span>Sign out</span>
           <v-icon right color="#00000">mdi-logout</v-icon>
@@ -73,8 +73,8 @@ export default {
       showNav: true,
       drawer: false,
       items: [
-        { title: 'Home', icon: 'mdi-home', route: '/home' },
         { title: 'About', icon: 'mdi-help-box', route: '/about' },
+        { title: 'Home', icon: 'mdi-home', route: '/home' },
         { title: 'Article', icon: 'mdi-book', route: '/article' }
       ],
       snackbar: false

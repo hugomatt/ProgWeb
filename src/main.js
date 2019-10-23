@@ -47,9 +47,10 @@ const routes = [
   },
   {
     path: '/',
-    name: 'Home',
-    component: require('@/components/Home.vue').default
-  }
+    name: 'about',
+    component: require('@/view/About.vue').default
+  },
+  { path: '*', redirect: '/about' }
 ]
 
 const router = new VueRouter({
