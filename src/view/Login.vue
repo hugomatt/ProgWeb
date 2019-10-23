@@ -42,13 +42,18 @@ export default {
           alert(this.msgStatus)
         } else {
           try {
-            const res = await this.axios.post('http://localhost:4000/api/login', {
-              username: this.user,
-              password: this.password,
-              userId: this.$session.id()
-            })
+            const res = await this.axios.post(
+              'http://localhost:4000/api/login',
+              {
+                username: this.user,
+                password: this.password,
+                userId: this.$session.id()
+              }
+            )
             this.$session.start()
-            const art = await this.axios.get('http://localhost:4000/api/article')
+            const art = await this.axios.get(
+              'http://localhost:4000/api/article'
+            )
             this.$session.set('article', art.data)
 
             this.$session.set('username', res.data.username)
