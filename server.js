@@ -11,6 +11,8 @@ const session = require('express-session')
 
 const app = express()
 
+var num = 0
+
 app.use(session({
   secret: 'blablabla', // changez cette valeur
   resave: false,
@@ -32,7 +34,8 @@ const articles = [{
   person: 'Thomas',
   date: '2019/10/22',
   status: 'overdue',
-  content: 'Les ravages de la peste'
+  content: 'Les ravages de la peste',
+  id: 0
 }]
 
 app.get('/api/article', (req, res) => {
@@ -40,19 +43,31 @@ app.get('/api/article', (req, res) => {
 })
 
 app.post('/api/article', (req, res) => {
+  console.log(num)
+  num = num + 1
   articles.push({
     title: req.body.title,
     person: req.body.person,
     date: req.body.date,
     status: req.body.status,
-    content: req.body.content
+    content: req.body.content,
+    id: num
   })
   res.json({
     title: req.body.title,
     person: req.body.person,
     date: req.body.date,
     status: req.body.status,
-    content: req.body.content
+    content: req.body.content,
+    id: num
+  })
+})
+
+app.post('/api/suprarticle', (req, res) => {
+  console.log(req.body.idtest)
+  articles.splice(req.body.idtest, 1)
+  res.json({
+    message: 'Article supprimé'
   })
 })
 
