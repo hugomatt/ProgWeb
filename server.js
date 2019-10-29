@@ -31,7 +31,7 @@ const users = [{
 
 const articles = [{
   title: 'Maladie',
-  person: 'Thomas',
+  person: 'admin',
   date: '2019/10/22',
   status: 'overdue',
   content: 'Les ravages de la peste',
