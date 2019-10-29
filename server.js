@@ -69,7 +69,7 @@ app.post('/api/suprarticle', (req, res) => {
   res.json({
     message: 'article supprimé'
   })
-})
+}
 
 app.post('/api/addElement', (req, res) => {
   console.log('req.body', req.body)
