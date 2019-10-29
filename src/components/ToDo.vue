@@ -59,6 +59,7 @@ export default {
     },
     delTodo (todo) {
       const todoIndex = this.todoList.indexOf(todo)
+      console.log(todoIndex)
       this.todoList.splice(todoIndex, 1)
       console.log(JSON.stringify(this.todoList))
     }
