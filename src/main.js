@@ -59,7 +59,10 @@ const router = new VueRouter({
 })
 
 new Vue({
+<<<<<<< HEAD
   el: '#app',
+=======
+>>>>>>> developpe
   router,
   vuetify,
   render: h => h(Menu)

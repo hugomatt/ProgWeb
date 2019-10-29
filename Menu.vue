@@ -55,14 +55,13 @@
       </router-link>
     </v-app-bar>
     <div class="text-center">
-      <back-to-top text="Back to top"></back-to-top>
     </div>
   </nav>
 </template>
 
 <script>
 export default {
-  name: 'app',
+  name: 'menu',
   data () {
     return {
       activeBtn: 1,
@@ -76,8 +75,7 @@ export default {
         { title: 'About', icon: 'mdi-help-box', route: '/about' },
         { title: 'Home', icon: 'mdi-home', route: '/home' },
         { title: 'Article', icon: 'mdi-book', route: '/article' }
-      ],
-      snackbar: false
+      ]
     }
   },
   created () {

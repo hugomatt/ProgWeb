@@ -3,7 +3,11 @@
     <h1 class="subheading grey--text">Article</h1>
     <v-snackbar v-model="snackbar" :timeout="4000" top color="#000000">
       <span>Ajout réussi</span>
-      <v-btn flat color="#FF0000" @click="snackbar = false">Close</v-btn>
+      <v-btn flat color="#FF0000" @click="snackbar = false">Fermer</v-btn>
+    </v-snackbar>
+    <v-snackbar v-model="snackbar2" :timeout="4000" top color="#000000">
+      <span>Suppression réussi</span>
+      <v-btn flat color="#FF0000" @click="snackbar2 = false">Fermer</v-btn>
     </v-snackbar>
     <v-container class="my-5">
       <v-expansion-panels accordion>
@@ -19,11 +23,11 @@
     </v-container>
     <v-dialog max-width="600px" v-model="dialog">
       <template v-slot:activator="{on}">
-        <v-btn flat color="#FF0000" text v-on="on" class="success">Add new article</v-btn>
+        <v-btn flat color="#FF0000" text v-on="on" class="success">Ajouter nouvel article</v-btn>
       </template>
       <v-card elevation="24">
         <v-card-title>
-          <h2>Add a new article</h2>
+          <h2>Ajouter un nouvel article</h2>
         </v-card-title>
         <v-form class="px-3" ref="form">
           <v-text-field label="Title" v-model="title" prepend-icon="mdi-folder" :rules="inputRules"></v-text-field>
@@ -69,10 +73,32 @@
             color="#59D120"
             @click="submit"
             :loading="loading"
-          >Add article</v-btn>
+          >Ajout article</v-btn>
         </v-form>
       </v-card>
     </v-dialog>
+<<<<<<< HEAD
+=======
+    <v-dialog max-width="600px" v-model="dialog2">
+    <template v-slot:activator="{on}">
+        <v-btn flat color="#FF0000" text v-on="on" class="success">Supprimer un article</v-btn>
+      </template>
+    <v-card elevation="24">
+      <v-card-title>
+        <h2>Suppression d'article</h2>
+      </v-card-title>
+      <v-form class="px-3" ref="form">
+          <v-text-field label="ID" v-model="ID" prepend-icon="mdi-folder" :rules="outputRules"></v-text-field>
+          <v-btn
+            flat
+            class="success mx-0 mt-3"
+            color="#FF0000"
+            @click="del"
+          >Suppr article</v-btn>
+      </v-form>
+    </v-card>
+    </v-dialog>
+>>>>>>> developpe
   </div>
 </template>
 
@@ -87,10 +113,21 @@ export default {
       menu1: false,
       title: '',
       content: '',
+<<<<<<< HEAD
       inputRules: [v => v.length >= 3 || 'Minimum length is a 3'],
       loading: false,
       dialog: false,
       snackbar: false
+=======
+      ID: '',
+      inputRules: [v => v.length >= 3 || 'Minimum 3 caractère'],
+      outputRules: [v => v.length >= 2 || 'Veuillez selectionner une ligne'],
+      loading: false,
+      dialog: false,
+      dialog2: false,
+      snackbar: false,
+      snackbar2: false
+>>>>>>> developpe
     }
   },
   created () {
@@ -148,6 +185,40 @@ export default {
         }
       }
     },
+<<<<<<< HEAD
+=======
+    async del () {
+      if (!this.$session.id()) {
+        this.msgStatus = 'You are not connected'
+        alert(this.msgStatus)
+      } else {
+        if (this.$session.get('username') !== 'admin') {
+          this.msgStatus =
+            'You are not alowed to add an articles, you need to be administrator'
+          alert(this.msgStatus)
+        } else {
+          try {
+            await this.axios.post(
+              'http://localhost:4000/api/suprarticle',
+              {
+                ID: this.ID
+              }
+            )
+            const art = await this.axios.get(
+              'http://localhost:4000/api/article'
+            )
+            this.$session.set('article', art.data)
+            this.projects = this.$session.get('article')
+          } catch (error) {
+            this.error = error.response.data.message
+            console.log('response', JSON.stringify(error.response))
+          }
+        }
+      }
+      this.dialog2 = false
+      this.snackbar2 = false
+    },
+>>>>>>> developpe
     async fetchEventsList () {
       if (!this.$session.id()) {
       } else {
