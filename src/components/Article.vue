@@ -84,7 +84,7 @@
         <h2>Del an article</h2>
       </v-card-title>
       <v-form class="px-3" ref="form">
-          <v-text-field label="ID" v-model="id" prepend-icon="mdi-folder" :rules="outputRules"></v-text-field>
+          <v-text-field label="ID" v-model="idtest" prepend-icon="mdi-folder" :rules="outputRules"></v-text-field>
           <v-btn
             flat
             class="success mx-0 mt-3"
@@ -109,7 +109,7 @@ export default {
       menu1: false,
       title: '',
       content: '',
-      id: 0,
+      idtest: null,
       inputRules: [v => v.length >= 3 || 'Minimum length is a 3'],
       outputRules: [v => v.length >= 2 || 'Please select an ID'],
       loading: false,
@@ -187,9 +187,14 @@ export default {
             await this.axios.post(
               'http://localhost:4000/api/suprarticle',
               {
-                id: this.id
+                idtest: this.idtest
               }
             )
+            const art = await this.axios.get(
+              'http://localhost:4000/api/article'
+            )
+            this.$session.set('article', art.data)
+            this.projects = this.$session.get('article')
           } catch (error) {
             this.error = error.response.data.message
             console.log('response', JSON.stringify(error.response))

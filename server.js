@@ -64,25 +64,10 @@ app.post('/api/article', (req, res) => {
 })
 
 app.post('/api/suprarticle', (req, res) => {
-  console.log(req.body.id)
-  const art = articles.find(a => a.id === req.body.id)
-  if (!art) {
-    // gérez le cas il n'y a pas d'id
-    res.status(401)
-    res.json({
-      message: 'Pas d id'
-    })
-  } else {
-    for (var i = 0; i < articles.length; i++) {
-      if (articles[i] === req.body.id) {
-        this.articles.splice(i, 1)
-      }
-    }
-    console.log(articles[i])
-    console.log(articles)
-  }
+  console.log(req.body.idtest)
+  articles.splice(req.body.idtest, 1)
   res.json({
-    message: 'Article supprimé'
+    message: 'article supprimé'
   })
 })
 
