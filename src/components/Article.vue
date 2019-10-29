@@ -54,8 +54,6 @@
             </template>
             <v-date-picker v-model="due" color="#203DD1" @input="menu1 = false"></v-date-picker>
           </v-menu>
-          <v-row align="center">
-            <v-col cols="12">
               <v-select
                 v-model="status"
                 prepend-icon="mdi-circle"
@@ -63,8 +61,6 @@
                 :menu-props="{ top: true, offsetY: true }"
                 label="status"
               ></v-select>
-            </v-col>
-          </v-row>
           <v-btn
             flat
             class="success mx-0 mt-3"
@@ -75,7 +71,7 @@
         </v-form>
       </v-card>
     </v-dialog>
-    <v-dialog max-width="600px" v-model="ID">
+    <v-dialog max-width="600px" v-model="dialog2">
     <template v-slot:activator="{on}">
         <v-btn flat color="#FF0000" text v-on="on" class="success">Del an article</v-btn>
       </template>
@@ -84,13 +80,12 @@
         <h2>Del an article</h2>
       </v-card-title>
       <v-form class="px-3" ref="form">
-          <v-text-field label="ID" v-model="idtest" prepend-icon="mdi-folder" :rules="outputRules"></v-text-field>
+          <v-text-field label="ID" v-model="ID" prepend-icon="mdi-folder" :rules="outputRules"></v-text-field>
           <v-btn
             flat
             class="success mx-0 mt-3"
             color="#FF0000"
             @click="del"
-            :loading="loading"
           >Del article</v-btn>
       </v-form>
     </v-card>
@@ -109,12 +104,12 @@ export default {
       menu1: false,
       title: '',
       content: '',
-      idtest: null,
+      ID: '',
       inputRules: [v => v.length >= 3 || 'Minimum length is a 3'],
       outputRules: [v => v.length >= 2 || 'Please select an ID'],
       loading: false,
       dialog: false,
-      ID: false,
+      dialog2: false,
       snackbar: false
     }
   },
@@ -187,7 +182,7 @@ export default {
             await this.axios.post(
               'http://localhost:4000/api/suprarticle',
               {
-                idtest: this.idtest
+                ID: this.ID
               }
             )
             const art = await this.axios.get(
@@ -201,7 +196,7 @@ export default {
           }
         }
       }
-      this.ID = false
+      this.dialog2 = false
     },
     async fetchEventsList () {
       if (!this.$session.id()) {
