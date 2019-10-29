@@ -43,7 +43,7 @@ export default {
         } else {
           try {
             const res = await this.axios.post(
-              'http://localhost:4000/api/login',
+              '/api/login',
               {
                 username: this.user,
                 password: this.password,
@@ -52,7 +52,7 @@ export default {
             )
             this.$session.start()
             const art = await this.axios.get(
-              'http://localhost:4000/api/article'
+              '/api/article'
             )
             this.$session.set('article', art.data)
 

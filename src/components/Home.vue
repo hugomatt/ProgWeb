@@ -75,7 +75,7 @@ export default {
     async fetchEventsList () {
       if (!this.$session.id()) {
       } else {
-        const art = await this.axios.get('http://localhost:4000/api/article')
+        const art = await this.axios.get('/api/article')
         this.$session.set('article', art.data)
         this.articles = this.$session.get('article')
       }

@@ -138,7 +138,7 @@ export default {
             try {
               var user = this.$session.get('username')
               const res = await this.axios.post(
-                'http://localhost:4000/api/article',
+                '/api/article',
                 {
                   title: this.title,
                   person: user,
@@ -161,7 +161,7 @@ export default {
               var contenu = res.data.content
               console.log(contenu)
               const art = await this.axios.get(
-                'http://localhost:4000/api/article'
+                '/api/article'
               )
               this.$session.set('article', art.data)
               this.projects = this.$session.get('article')
@@ -185,13 +185,13 @@ export default {
         } else {
           try {
             await this.axios.post(
-              'http://localhost:4000/api/suprarticle',
+              '/api/suprarticle',
               {
                 idtest: this.idtest
               }
             )
             const art = await this.axios.get(
-              'http://localhost:4000/api/article'
+              '/api/article'
             )
             this.$session.set('article', art.data)
             this.projects = this.$session.get('article')
@@ -206,7 +206,7 @@ export default {
     async fetchEventsList () {
       if (!this.$session.id()) {
       } else {
-        const art = await this.axios.get('http://localhost:4000/api/article')
+        const art = await this.axios.get('/api/article')
         this.$session.set('article', art.data)
         this.projects = this.$session.get('article')
       }

@@ -44,7 +44,7 @@ export default {
           try {
             // add new user
             const res = await this.axios.post(
-              'http://localhost:4000/api/addElement',
+              '/api/addElement',
               {
                 username: this.username,
                 password: this.password,
@@ -52,8 +52,6 @@ export default {
               }
             )
             this.info = res.data.username
-            // .then(jsondata => console.log('response is:', jsondata), alert(this.jsondata))
-            // .catch(console.log)
             console.log('ajouté !')
             this.msgStatus =
               'The User ' + this.username + ' has been successfully created !'
