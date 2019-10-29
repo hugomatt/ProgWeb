@@ -3,7 +3,11 @@
     <h1 class="subheading grey--text">Article</h1>
     <v-snackbar v-model="snackbar" :timeout="4000" top color="#000000">
       <span>Ajout réussi</span>
-      <v-btn flat color="#FF0000" @click="snackbar = false">Close</v-btn>
+      <v-btn flat color="#FF0000" @click="snackbar = false">Fermer</v-btn>
+    </v-snackbar>
+    <v-snackbar v-model="snackbar2" :timeout="4000" top color="#000000">
+      <span>Suppression réussi</span>
+      <v-btn flat color="#FF0000" @click="snackbar2 = false">Fermer</v-btn>
     </v-snackbar>
     <v-container class="my-5">
       <v-expansion-panels accordion>
@@ -13,18 +17,17 @@
             <div class="font-weight-bold">By {{project.person}}</div>
             <div class="font-weight-bold">Due by {{project.date}}</div>
             <div>{{project.content}}</div>
-            <div class="font-weight-bold">Id: {{project.id}}</div>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
     </v-container>
     <v-dialog max-width="600px" v-model="dialog">
       <template v-slot:activator="{on}">
-        <v-btn flat color="#FF0000" text v-on="on" class="success">Add new article</v-btn>
+        <v-btn flat color="#FF0000" text v-on="on" class="success">Ajouter nouvel article</v-btn>
       </template>
       <v-card elevation="24">
         <v-card-title>
-          <h2>Add a new article</h2>
+          <h2>Ajouter un nouvel article</h2>
         </v-card-title>
         <v-form class="px-3" ref="form">
           <v-text-field label="Title" v-model="title" prepend-icon="mdi-folder" :rules="inputRules"></v-text-field>
@@ -67,17 +70,17 @@
             color="#59D120"
             @click="submit"
             :loading="loading"
-          >Add article</v-btn>
+          >Ajout article</v-btn>
         </v-form>
       </v-card>
     </v-dialog>
     <v-dialog max-width="600px" v-model="dialog2">
     <template v-slot:activator="{on}">
-        <v-btn flat color="#FF0000" text v-on="on" class="success">Del an article</v-btn>
+        <v-btn flat color="#FF0000" text v-on="on" class="success">Supprimer un article</v-btn>
       </template>
     <v-card elevation="24">
       <v-card-title>
-        <h2>Del an article</h2>
+        <h2>Suppression d'article</h2>
       </v-card-title>
       <v-form class="px-3" ref="form">
           <v-text-field label="ID" v-model="ID" prepend-icon="mdi-folder" :rules="outputRules"></v-text-field>
@@ -86,7 +89,7 @@
             class="success mx-0 mt-3"
             color="#FF0000"
             @click="del"
-          >Del article</v-btn>
+          >Suppr article</v-btn>
       </v-form>
     </v-card>
     </v-dialog>
@@ -105,12 +108,13 @@ export default {
       title: '',
       content: '',
       ID: '',
-      inputRules: [v => v.length >= 3 || 'Minimum length is a 3'],
-      outputRules: [v => v.length >= 2 || 'Please select an ID'],
+      inputRules: [v => v.length >= 3 || 'Minimum 3 caractère'],
+      outputRules: [v => v.length >= 2 || 'Veuillez selectionner une ligne'],
       loading: false,
       dialog: false,
       dialog2: false,
-      snackbar: false
+      snackbar: false,
+      snackbar2: false
     }
   },
   created () {
@@ -197,6 +201,7 @@ export default {
         }
       }
       this.dialog2 = false
+      this.snackbar2 = false
     },
     async fetchEventsList () {
       if (!this.$session.id()) {
