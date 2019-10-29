@@ -57,16 +57,13 @@
             </template>
             <v-date-picker v-model="due" color="#203DD1" @input="menu1 = false"></v-date-picker>
           </v-menu>
-          <v-row align="center">
-            <v-col cols="12">
               <v-select
                 v-model="status"
+                prepend-icon="mdi-circle"
                 :items="stats"
                 :menu-props="{ top: true, offsetY: true }"
                 label="status"
               ></v-select>
-            </v-col>
-          </v-row>
           <v-btn
             flat
             class="success mx-0 mt-3"
@@ -77,8 +74,6 @@
         </v-form>
       </v-card>
     </v-dialog>
-<<<<<<< HEAD
-=======
     <v-dialog max-width="600px" v-model="dialog2">
     <template v-slot:activator="{on}">
         <v-btn flat color="#FF0000" text v-on="on" class="success">Supprimer un article</v-btn>
@@ -98,7 +93,6 @@
       </v-form>
     </v-card>
     </v-dialog>
->>>>>>> developpe
   </div>
 </template>
 
@@ -113,12 +107,6 @@ export default {
       menu1: false,
       title: '',
       content: '',
-<<<<<<< HEAD
-      inputRules: [v => v.length >= 3 || 'Minimum length is a 3'],
-      loading: false,
-      dialog: false,
-      snackbar: false
-=======
       ID: '',
       inputRules: [v => v.length >= 3 || 'Minimum 3 caractère'],
       outputRules: [v => v.length >= 2 || 'Veuillez selectionner une ligne'],
@@ -127,7 +115,6 @@ export default {
       dialog2: false,
       snackbar: false,
       snackbar2: false
->>>>>>> developpe
     }
   },
   created () {
@@ -185,8 +172,6 @@ export default {
         }
       }
     },
-<<<<<<< HEAD
-=======
     async del () {
       if (!this.$session.id()) {
         this.msgStatus = 'You are not connected'
@@ -218,7 +203,6 @@ export default {
       this.dialog2 = false
       this.snackbar2 = false
     },
->>>>>>> developpe
     async fetchEventsList () {
       if (!this.$session.id()) {
       } else {
