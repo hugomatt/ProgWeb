@@ -13,7 +13,6 @@
             <div class="font-weight-bold">By {{project.person}}</div>
             <div class="font-weight-bold">Due by {{project.date}}</div>
             <div>{{project.content}}</div>
-            <div class="font-weight-bold">Id: {{project.id}}</div>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -54,13 +53,16 @@
             </template>
             <v-date-picker v-model="due" color="#203DD1" @input="menu1 = false"></v-date-picker>
           </v-menu>
+          <v-row align="center">
+            <v-col cols="12">
               <v-select
                 v-model="status"
-                prepend-icon="mdi-circle"
                 :items="stats"
                 :menu-props="{ top: true, offsetY: true }"
                 label="status"
               ></v-select>
+            </v-col>
+          </v-row>
           <v-btn
             flat
             class="success mx-0 mt-3"
@@ -70,25 +72,6 @@
           >Add article</v-btn>
         </v-form>
       </v-card>
-    </v-dialog>
-    <v-dialog max-width="600px" v-model="dialog2">
-    <template v-slot:activator="{on}">
-        <v-btn flat color="#FF0000" text v-on="on" class="success">Del an article</v-btn>
-      </template>
-    <v-card elevation="24">
-      <v-card-title>
-        <h2>Del an article</h2>
-      </v-card-title>
-      <v-form class="px-3" ref="form">
-          <v-text-field label="ID" v-model="ID" prepend-icon="mdi-folder" :rules="outputRules"></v-text-field>
-          <v-btn
-            flat
-            class="success mx-0 mt-3"
-            color="#FF0000"
-            @click="del"
-          >Del article</v-btn>
-      </v-form>
-    </v-card>
     </v-dialog>
   </div>
 </template>
@@ -104,12 +87,9 @@ export default {
       menu1: false,
       title: '',
       content: '',
-      ID: '',
       inputRules: [v => v.length >= 3 || 'Minimum length is a 3'],
-      outputRules: [v => v.length >= 2 || 'Please select an ID'],
       loading: false,
       dialog: false,
-      dialog2: false,
       snackbar: false
     }
   },
@@ -167,36 +147,6 @@ export default {
           }
         }
       }
-    },
-    async del () {
-      if (!this.$session.id()) {
-        this.msgStatus = 'You are not connected'
-        alert(this.msgStatus)
-      } else {
-        if (this.$session.get('username') !== 'admin') {
-          this.msgStatus =
-            'You are not alowed to add an articles, you need to be administrator'
-          alert(this.msgStatus)
-        } else {
-          try {
-            await this.axios.post(
-              'http://localhost:4000/api/suprarticle',
-              {
-                ID: this.ID
-              }
-            )
-            const art = await this.axios.get(
-              'http://localhost:4000/api/article'
-            )
-            this.$session.set('article', art.data)
-            this.projects = this.$session.get('article')
-          } catch (error) {
-            this.error = error.response.data.message
-            console.log('response', JSON.stringify(error.response))
-          }
-        }
-      }
-      this.dialog2 = false
     },
     async fetchEventsList () {
       if (!this.$session.id()) {
