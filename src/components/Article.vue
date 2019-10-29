@@ -3,19 +3,19 @@
     <h1 class="subheading grey--text">Article</h1>
     <v-snackbar v-model="snackbar" :timeout="4000" top color="#000000">
       <span>Ajout réussi</span>
-      <v-btn flat color="#FF0000" @click="snackbar = false">Fermer</v-btn>
+      <v-btn color="#FF0000" @click="snackbar = false">Fermer</v-btn>
     </v-snackbar>
     <v-snackbar v-model="snackbar2" :timeout="4000" top color="#000000">
       <span>Suppression réussi</span>
-      <v-btn flat color="#FF0000" @click="snackbar2 = false">Fermer</v-btn>
+      <v-btn color="#FF0000" @click="snackbar2 = false">Fermer</v-btn>
     </v-snackbar>
     <v-container class="my-5">
       <v-expansion-panels accordion>
         <v-expansion-panel v-for="project in myProjects" :key="project.title">
           <v-expansion-panel-header>{{project.title}}</v-expansion-panel-header>
           <v-expansion-panel-content class="grey--text">
-            <div class="font-weight-bold">By {{project.person}}</div>
-            <div class="font-weight-bold">Due by {{project.date}}</div>
+            <div class="font-weight-bold">Par {{project.person}}</div>
+            <div class="font-weight-bold">Depuis le {{project.date}}</div>
             <div>{{project.content}}</div>
           </v-expansion-panel-content>
         </v-expansion-panel>
@@ -23,7 +23,7 @@
     </v-container>
     <v-dialog max-width="600px" v-model="dialog">
       <template v-slot:activator="{on}">
-        <v-btn flat color="#FF0000" text v-on="on" class="success">Ajouter nouvel article</v-btn>
+        <v-btn color="#FF0000" text v-on="on" class="success">Ajouter nouvel article</v-btn>
       </template>
       <v-card elevation="24">
         <v-card-title>
@@ -49,7 +49,7 @@
             <template v-slot:activator="{ on }">
               <v-text-field
                 v-model="due"
-                label="Date of creation"
+                label="Date de création"
                 prepend-icon="mdi-calendar"
                 readonly
                 v-on="on"
@@ -57,15 +57,14 @@
             </template>
             <v-date-picker v-model="due" color="#203DD1" @input="menu1 = false"></v-date-picker>
           </v-menu>
-              <v-select
-                v-model="status"
-                prepend-icon="mdi-circle"
-                :items="stats"
-                :menu-props="{ top: true, offsetY: true }"
-                label="status"
-              ></v-select>
+          <v-select
+            v-model="status"
+            prepend-icon="mdi-circle"
+            :items="stats"
+            :menu-props="{ top: true, offsetY: true }"
+            label="Statut"
+          ></v-select>
           <v-btn
-            flat
             class="success mx-0 mt-3"
             color="#59D120"
             @click="submit"
@@ -75,23 +74,18 @@
       </v-card>
     </v-dialog>
     <v-dialog max-width="600px" v-model="dialog2">
-    <template v-slot:activator="{on}">
-        <v-btn flat color="#FF0000" text v-on="on" class="success">Supprimer un article</v-btn>
+      <template v-slot:activator="{on}">
+        <v-btn color="#FF0000" text v-on="on" class="success">Supprimer un article</v-btn>
       </template>
-    <v-card elevation="24">
-      <v-card-title>
-        <h2>Suppression d'article</h2>
-      </v-card-title>
-      <v-form class="px-3" ref="form">
+      <v-card elevation="24">
+        <v-card-title>
+          <h2>Suppression d'article</h2>
+        </v-card-title>
+        <v-form class="px-3" ref="form">
           <v-text-field label="ID" v-model="ID" prepend-icon="mdi-folder" :rules="outputRules"></v-text-field>
-          <v-btn
-            flat
-            class="success mx-0 mt-3"
-            color="#FF0000"
-            @click="del"
-          >Suppr article</v-btn>
-      </v-form>
-    </v-card>
+          <v-btn class="success mx-0 mt-3" color="#FF0000" @click="del">Suppr article</v-btn>
+        </v-form>
+      </v-card>
     </v-dialog>
   </div>
 </template>
@@ -101,8 +95,8 @@ export default {
   data () {
     return {
       projects: [],
+      status: 'ongoing',
       stats: ['ongoing', 'overdue', 'complete'],
-      status: '',
       due: new Date().toISOString().substr(0, 10),
       menu1: false,
       title: '',
@@ -124,12 +118,12 @@ export default {
   methods: {
     async submit () {
       if (!this.$session.id()) {
-        this.msgStatus = 'You are not connected'
+        this.msgStatus = 'Connexion inexistante'
         alert(this.msgStatus)
       } else {
-        if (this.$session.get('username') !== 'admin') {
+        if (this.$session.get('username') !== 'Admin') {
           this.msgStatus =
-            'You are not alowed to add an articles, you need to be administrator'
+            'Vous devez être administrateur afin de rajouter un article'
           alert(this.msgStatus)
         } else {
           if (this.$refs.form.validate()) {
@@ -174,21 +168,19 @@ export default {
     },
     async del () {
       if (!this.$session.id()) {
-        this.msgStatus = 'You are not connected'
+        this.msgStatus = 'Connexion inexistante'
         alert(this.msgStatus)
       } else {
-        if (this.$session.get('username') !== 'admin') {
+        if (this.$session.get('username') !== 'Admin') {
           this.msgStatus =
-            'You are not alowed to add an articles, you need to be administrator'
+            'Vous devez être administrateur afin de supprimer un article'
           alert(this.msgStatus)
         } else {
           try {
-            await this.axios.post(
-              'http://localhost:4000/api/suprarticle',
-              {
-                ID: this.ID
-              }
-            )
+            await this.axios.post('http://localhost:4000/api/suprarticle', {
+              ID: this.ID
+            })
+            this.snackbar2 = true
             const art = await this.axios.get(
               'http://localhost:4000/api/article'
             )
@@ -201,7 +193,6 @@ export default {
         }
       }
       this.dialog2 = false
-      this.snackbar2 = false
     },
     async fetchEventsList () {
       if (!this.$session.id()) {

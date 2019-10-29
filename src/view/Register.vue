@@ -34,11 +34,11 @@ export default {
       console.log(this.email)
       if (this.password === '' || this.username === '') {
         console.log('empty')
-        this.msgStatus = 'Username, Password & Email are required !'
+        this.msgStatus = 'Nom, mot de passe ainsi que mail est necessaire !!'
         alert(this.msgStatus)
       } else {
         if (this.$session.id()) {
-          this.msgStatus = 'A user is already connected'
+          this.msgStatus = 'Un utilisateur est déjà connecté'
           alert(this.msgStatus)
         } else {
           try {
@@ -56,7 +56,7 @@ export default {
             // .catch(console.log)
             console.log('ajouté !')
             this.msgStatus =
-              'The User ' + this.username + ' has been successfully created !'
+              this.username + ' votre compte à bien été crée !'
             console.log(this.msgStatus)
             alert(this.msgStatus)
             this.$router.push('Home')

@@ -41,11 +41,6 @@ const routes = [
     component: require('@/components/Article.vue').default
   },
   {
-    path: '/todo',
-    name: 'ToDo',
-    component: require('@/components/ToDo.vue').default
-  },
-  {
     path: '/',
     name: 'about',
     component: require('@/view/About.vue').default
