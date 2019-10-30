@@ -5,38 +5,27 @@
       <v-layout row class="mb-3">
         <v-tooltip top>
           <template v-slot:activator="{ on }">
-            <v-btn small flat color="grey" @click="sortBy('title')" v-on="on">
+            <v-btn small color="grey" @click="sortBy('title')" v-on="on">
               <v-icon left small>mdi-folder</v-icon>
-              <span class="caption text-lowercase">By article name</span>
+              <span class="caption text-lowercase">Par nom d'article</span>
             </v-btn>
           </template>
-          <span>Sort article by article name</span>
-        </v-tooltip>
-        <v-tooltip top>
-          <template v-slot:activator="{ on }">
-            <v-btn small flat color="grey" @click="sortBy('person')" v-on="on">
-              <v-icon left small>mdi-person</v-icon>
-              <span class="caption text-lowercase">By person</span>
-            </v-btn>
-          </template>
-          <span>Sort article by name</span>
+          <span>Trier article par nom d'article</span>
         </v-tooltip>
       </v-layout>
-
       <br />
-
-      <v-card flat v-for="article in articles" :key="article.title">
+      <v-card flat :elevation="0" v-for="article in articles" :key="article.title">
         <v-layout row wrap :class="`pa-3 article ${article.status}`">
           <v-flex xs12 md6>
-            <div class="caption grey--text">Article title</div>
+            <div class="caption grey--text">Titre article</div>
             <div>{{ article.title }}</div>
           </v-flex>
           <v-flex xs6 md2>
-            <div class="caption grey--text">edited by</div>
+            <div class="caption grey--text">Edtiter par</div>
             <div>{{ article.person }}</div>
           </v-flex>
           <v-flex xs6 sm4 md2>
-            <div class="caption grey--text">Due by</div>
+            <div class="caption grey--text">Depuis le</div>
             <div>{{ article.date }}</div>
           </v-flex>
           <v-flex xs2 sm4 md2>
