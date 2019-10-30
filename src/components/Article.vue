@@ -182,7 +182,11 @@ export default {
               ID: this.ID
             })
             this.snackbar2 = true
-            this.$router.push('Article')
+            const art = await this.axios.get(
+              '/api/article'
+            )
+            this.$session.set('article', art.data)
+            this.projects = this.$session.get('article')
           } catch (error) {
             this.error = error.response.data.message
             console.log('response', JSON.stringify(error.response))
