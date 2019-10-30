@@ -84,6 +84,7 @@
         <v-form class="px-3" ref="form">
           <v-text-field label="ID" v-model="ID" prepend-icon="mdi-folder" :rules="outputRules"></v-text-field>
           <v-btn class="success mx-0 mt-3" color="#FF0000" @click="del">Suppr article</v-btn>
+          <router-view></router-view>
         </v-form>
       </v-card>
     </v-dialog>
@@ -181,9 +182,6 @@ export default {
               ID: this.ID
             })
             this.snackbar2 = true
-            await this.axios.get(
-              '/api/article'
-            )
             this.$router.push('Article')
           } catch (error) {
             this.error = error.response.data.message
